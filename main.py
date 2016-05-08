@@ -1,6 +1,7 @@
 from astropy.io import fits
 import matplotlib.pyplot as plt
 import numpy as np
+import jdcal
 
 
 def fitfunction(degree, wavelength, flux, offset, zuma):
@@ -86,8 +87,24 @@ for i in range(len(targetfile)):
             subarea += wavelength[k] * fitdate['y_new'][k]
         Area += subarea
     brightness.append(Area)
-minbrightness = min(brightness)
-brightness = [(x-minbrightness) + 1 for x in brightness]
-print brightness
+maxb = 0
+index = 0
+for i in range(len(brightness)):
+    if brightness[i] > maxb:
+        maxb = brightness[i]
+        print maxb
+        index = i
+    else:
+        pass
+pb = [None] * len(brightness)
+for i in range(len(brightness)):
+    differnce = maxb - brightness[i]
+    percentdiff = differnce/brightness[i]
+    percentbright = 1 - percentdiff
+    pb[i] = percentbright
+# minbrightness = min(brightness)
+# brightness = [(x-minbrightness) + 1 for x in brightness]
+print pb
+print date
 
 
